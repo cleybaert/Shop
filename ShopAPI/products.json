@@ -1,0 +1,51 @@
+﻿[
+  {
+    "id": 1,
+    "name": "Zomerkleedje",
+    "description": "Kort kleedje voor in de zomer",
+    "price": "44.95",
+    "availableSizes": [ "14", "16", "18" ],
+    "url": "/assets/solange-flowers.jpg",
+    "Previews": [
+      {
+        "Thumbnail": "https://shop.lilybalou.be/media/catalog/product/cache/thumbnail/88x88/beff4985b56e3afdbeabfc89641a4582/s/o/solange-flowersback.jpg",
+        "Detail": "https://shop.lilybalou.be/media/catalog/product/cache/image/beff4985b56e3afdbeabfc89641a4582/s/o/solange-flowers.jpg"
+      },
+      {
+        "Thumbnail": "https://shop.lilybalou.be/media/catalog/product/cache/thumbnail/74x110/beff4985b56e3afdbeabfc89641a4582/x/_/x_dsc_4580_1.jpg",
+        "Detail": "https://shop.lilybalou.be/media/catalog/product/cache/image/beff4985b56e3afdbeabfc89641a4582/x/_/x_dsc_4580_1.jpg"
+      },
+      {
+        "Thumbnail": "https://shop.lilybalou.be/media/catalog/product/cache/thumbnail/73x110/beff4985b56e3afdbeabfc89641a4582/x/_/x_dsc_4586_1.jpg",
+        "Detail": "https://shop.lilybalou.be/media/catalog/product/cache/image/beff4985b56e3afdbeabfc89641a4582/x/_/x_dsc_4586_1.jpg"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Broek",
+    "description": "Jeans broek",
+    "price": "79.95",
+    "availableSizes": [ "12", "14" ],
+    "url": "/assets/fabian-royalblue.jpg",
+    "Previews": []
+  },
+  {
+    "id": 3,
+    "name": "Slaapzak",
+    "description": "Lichte slaapzak",
+    "price": "64.95",
+    "availableSizes": [],
+    "url": "/assets/2007032420125_Front_01.jpg",
+    "Previews": []
+  },
+  {
+    "id": 4,
+    "name": "Pull",
+    "description": "Wollen pull met bloemenmotief",
+    "price": "22.45",
+    "availableSizes": [ "14", "16", "18" ],
+    "url": "/assets/kiskissing-brand-new-oem-toddler-baby-boys.jpg",
+    "Previews": []
+  }
+]

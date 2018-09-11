@@ -1,0 +1,86 @@
+﻿[
+  {
+    "id": 0,
+    "name": "Clothing",
+    "description": "",
+    "subcategories": [
+      {
+        "id": 1,
+        "name": "Girls",
+        "description": "",
+        "subcategories": [
+          {
+            "id": 2,
+            "name": "Dresses",
+            "description": "",
+            "subcategories": []
+          },
+          {
+            "id": 7,
+            "name": "Pants",
+            "description": "",
+            "subcategories": []
+          },
+          {
+            "id": 12,
+            "name": "Sweaters",
+            "description": "",
+            "subcategories": []
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "name": "Boys",
+        "description": "",
+        "subcategories": [
+          {
+            "id": 9,
+            "name": "Pants",
+            "description": "",
+            "subcategories": []
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "name": "Children",
+        "description": "",
+        "subcategories": [
+          {
+            "id": 11,
+            "name": "Pants",
+            "description": "",
+            "subcategories": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Eat and drink",
+    "description": "",
+    "subcategories": [
+      {
+        "id": 4,
+        "name": "Bibs",
+        "description": "",
+        "subcategories": []
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Sleeping",
+    "description": "",
+    "subcategories": [
+      {
+        "id": 6,
+        "name": "Sleeping bags",
+        "description": "",
+        "subcategories": []
+      }
+    ]
+  }
+]

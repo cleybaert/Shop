@@ -1,0 +1,10 @@
+﻿{
+  "Tokens": {
+    "Key": "qfze=aeztµperaggwdf:qfhgfsdSDSDS!",
+    "Issuer": "localhost",
+    "Audience": "users"
+  },
+  "ConnectionStrings": {
+    "DaycareConnectionString": "Data Source=CHRISTOPHE\\SQLEXPRESS;Initial Catalog=Daycare;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
+  }
+}
