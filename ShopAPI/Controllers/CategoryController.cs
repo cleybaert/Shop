@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using Shop.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Abstractions;
-using Newtonsoft.Json;
-using Shop.Extensions;
-using System.Net;
+using Shop.Model.Interfaces;
+using Shop.Model.Entities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,32 +12,25 @@ namespace Shop.Controllers
     [Route("api/Categories")]
     public class CategoryController : Controller
     {
+        private readonly IProductRepository repository;
+
+        public CategoryController(IProductRepository repository)
+        {
+            this.repository = repository;
+        }
+
         // GET: api/categories
         [HttpGet]
         public IEnumerable<Category> Get()
         {
-            return new JsonReader<Category>().Read("categories.json");
+            return repository.GetCategories();
         }
 
         // GET api/categories/5
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public Category Get(int id)
         {
-            var categories = Get();
-            foreach (var item in categories)
-            {
-                if (item.Id == id)
-                    return Ok(item);
-                foreach (var subitem in item.Descendants())
-                {
-                    if (subitem != null)
-                    {
-                        if (subitem.Id == id)
-                            return Ok(subitem);
-                    }
-                }
-            }
-            return NotFound();
+            return repository.GetCategoryById(id);
         }
 
         private Exception HttpResponseException()

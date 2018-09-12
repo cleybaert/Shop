@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Shop.Model.Interfaces;
+using Shop.Data.File;
 
 namespace Shop
 {
@@ -78,6 +80,8 @@ namespace Shop
                 cfg.AddProfile<DaycareMappingProfile>();
             });
 
+            services.AddScoped<IProductRepository, ProductRepository>();
+
             services.AddMvc();
         }
 
@@ -92,12 +96,12 @@ namespace Shop
             {
                 app.UseDeveloperExceptionPage();
 
-                // Seed the database
-                using (var scope = app.ApplicationServices.CreateScope())
-                {
-                    var seeder = scope.ServiceProvider.GetService<Seeder>();
-                    seeder.SeedAsync().Wait();
-                }
+                //// Seed the database
+                //using (var scope = app.ApplicationServices.CreateScope())
+                //{
+                //    var seeder = scope.ServiceProvider.GetService<Seeder>();
+                //    seeder.SeedAsync().Wait();
+                //}
             }            
 
             app.UseMvc();

@@ -21,9 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="products.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <ProjectReference Include="..\Shop.DAL\Shop.Data.csproj" />
+    <ProjectReference Include="..\Shop.Model\Shop.Model.csproj" />
   </ItemGroup>
 
 </Project>

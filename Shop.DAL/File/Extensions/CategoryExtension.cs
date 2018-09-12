@@ -1,7 +1,7 @@
-﻿using Shop.Data.Entities;
+﻿using Shop.Model.Entities;
 using System.Collections.Generic;
 
-namespace Shop.Extensions
+namespace Shop.Data.File.Extensions
 {
     public static class CategoryExtension
     {
