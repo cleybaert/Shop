@@ -15,5 +15,14 @@ namespace Shop.Data.File.Extensions
             }
             return des;
         }
+
+        public static void SetAsParent(this Category category)
+        {
+            foreach (var item in category.Subcategories)
+            {
+                item.Parent = category;
+                item.SetAsParent();
+            }
+        }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Shop.Data.Entities
+namespace Shop.Data.Models
 {
     public class ProductPreview
     {

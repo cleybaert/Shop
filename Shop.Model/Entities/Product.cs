@@ -11,5 +11,7 @@ namespace Shop.Model.Entities
         public IEnumerable<string> AvailableSizes { get; set; }
         public string Url { get; set; }
         public IEnumerable<ProductPreview> Previews { get; set; }
+
+        public virtual IEnumerable<Category> Categories { get; set; }
     }
 }

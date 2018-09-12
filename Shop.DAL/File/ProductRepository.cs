@@ -21,9 +21,47 @@ namespace Shop.Data.File
             categories = new JsonReader<Category>().ReadResource("Shop.Data.File.Data.categories.json").AsQueryable();
         }
 
+        private Category ToSimpleCategory(Category value)
+        {
+            return new Category()
+            {
+                Description = value.Description,
+                Id = value.Id,
+                Name = value.Name,
+                Parent = null,
+                Products = null,
+                Subcategories = null
+            };
+        }       
+        
+        private Category ToFullCategory(Category value)
+        {
+            var res = new Category()
+            {
+                Description = value.Description,
+                Id = value.Id,
+                Name = value.Name,
+                Parent = value.Parent != null ? value.Parent : null,
+                Products = null,
+                // ToDo: set parent value on subcategories + call ToFullCategory on them
+                Subcategories = (value.Subcategories != null) ? value.Subcategories.Select(cat => 
+                (
+                    cat
+                )) : null
+            };
+        }
+
         public IEnumerable<Category> GetCategories()
         {
-            return categories.AsEnumerable();
+            var res = categories.Select(cat => ToSimpleCategory(cat)).ToList();
+            foreach (var cat in categories)
+                res.AddRange(cat.Descendants().Select(subcat => ToSimpleCategory(subcat)));
+            return res;
+        }
+
+        public IEnumerable<Category> GetCategoriesInTree()
+        {
+            return categories.Select(cat => ToFullCategory(cat));
         }
 
         public Category GetCategoryById(int id)
@@ -31,13 +69,13 @@ namespace Shop.Data.File
             foreach (var item in categories)
             {
                 if (item.Id == id)
-                    return item;
+                    return ToSimpleCategory(item);
                 foreach (var subitem in item.Descendants())
                 {
                     if (subitem != null)
                     {
                         if (subitem.Id == id)
-                            return subitem;
+                            return ToSimpleCategory(subitem);
                     }
                 }
             }
@@ -52,6 +90,24 @@ namespace Shop.Data.File
         public IEnumerable<Product> GetProducts()
         {
             return products.AsEnumerable();
+        }
+
+        public Category GetCategoryTreeById(int id)
+        {
+            foreach (var item in categories)
+            {
+                if (item.Id == id)
+                    return ToFullCategory(item);
+                foreach (var subitem in item.Descendants())
+                {
+                    if (subitem != null)
+                    {
+                        if (subitem.Id == id)
+                            return ToFullCategory(subitem);
+                    }
+                }
+            }
+            return null;
         }
     }
 }

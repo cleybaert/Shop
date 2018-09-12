@@ -28,9 +28,12 @@ namespace Shop.Controllers
 
         // GET api/categories/5
         [HttpGet("{id}")]
-        public Category Get(int id)
+        public Category Get(int id, bool simple = true)
         {
-            return repository.GetCategoryById(id);
+            if (simple)
+                return repository.GetCategoryById(id);
+            else
+                return repository.GetCategoryTreeById(id);
         }
 
         private Exception HttpResponseException()
