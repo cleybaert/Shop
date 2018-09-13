@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Shop.Data.Entities;
+using Shop.Model.Entities;
 using Shop.ViewModels;
+using ShopAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,9 @@ namespace Shop.Data
         public DaycareMappingProfile()
         {
             CreateMap<DaycareIdentityUser, AccountViewModel>().ForMember(dest => dest.Email, m => m.MapFrom(src => src.Email));
+            CreateMap<Category, CategoryModel>();
+            CreateMap<Category, ProductCategoryModel>();
+            CreateMap<Product, ProductModel>();
         }
     }
 }

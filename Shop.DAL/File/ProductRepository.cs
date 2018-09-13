@@ -7,6 +7,7 @@ using System.Text;
 using Shop.Data.File.Extensions;
 using System.Reflection;
 using System.Diagnostics;
+using Shop.Data.File.Entities;
 
 namespace Shop.Data.File
 {
@@ -14,11 +15,33 @@ namespace Shop.Data.File
     {
         private IQueryable<Product> products;
         private IQueryable<Category> categories;
+        private IQueryable<Category> categoryTree;
+        private IQueryable<ProductCategory> productCategories;
 
         public ProductRepository()
         {
             products = new JsonReader<Product>().ReadResource("Shop.Data.File.Data.products.json").AsQueryable();
-            categories = new JsonReader<Category>().ReadResource("Shop.Data.File.Data.categories.json").AsQueryable();
+            var categorySource = new JsonReader<Category>().ReadResource("Shop.Data.File.Data.categories.json").AsQueryable();
+            productCategories = new JsonReader<ProductCategory>().ReadResource("Shop.Data.File.Data.productcategories.json").AsQueryable();
+
+            // get all categories in one list
+
+            var allcats  = categorySource.Select(cat => ToSimpleCategory(cat)).ToList();
+            foreach (var cat in categorySource)
+                allcats.AddRange(cat.Descendants().Select(subcat => ToSimpleCategory(subcat)));
+            categories = allcats.AsQueryable();
+
+            // get all categories in a tree
+
+            allcats = categorySource.ToList();
+            foreach (var cat in categorySource)
+                allcats.AddRange(cat.Descendants());
+            foreach (var cat in allcats)
+            {
+                var parent = allcats.Find(p => (p.Subcategories == null ? false : p.Subcategories.Contains(cat)));
+                cat.Parent = parent ?? null;
+            }
+            categoryTree = allcats.AsQueryable();
         }
 
         private Category ToSimpleCategory(Category value)
@@ -34,52 +57,36 @@ namespace Shop.Data.File
             };
         }       
         
-        private Category ToFullCategory(Category value)
+        private Category ToFullCategory(Category value, Category parent =  null)
         {
             var res = new Category()
             {
                 Description = value.Description,
                 Id = value.Id,
                 Name = value.Name,
-                Parent = value.Parent != null ? value.Parent : null,
+                Parent = parent != null ? parent : null,
                 Products = null,
                 // ToDo: set parent value on subcategories + call ToFullCategory on them
-                Subcategories = (value.Subcategories != null) ? value.Subcategories.Select(cat => 
-                (
-                    cat
-                )) : null
+                Subcategories = null
             };
+            if (value.Subcategories.Count() > 0)
+                res.Subcategories = value.Subcategories.Select(cat => ToFullCategory(cat, res));
+            return res;
         }
 
         public IEnumerable<Category> GetCategories()
         {
-            var res = categories.Select(cat => ToSimpleCategory(cat)).ToList();
-            foreach (var cat in categories)
-                res.AddRange(cat.Descendants().Select(subcat => ToSimpleCategory(subcat)));
-            return res;
+            return categories.ToList();
         }
 
-        public IEnumerable<Category> GetCategoriesInTree()
+        public IEnumerable<Category> GetFullCategories()
         {
-            return categories.Select(cat => ToFullCategory(cat));
+            return categoryTree.ToList();
         }
 
         public Category GetCategoryById(int id)
         {
-            foreach (var item in categories)
-            {
-                if (item.Id == id)
-                    return ToSimpleCategory(item);
-                foreach (var subitem in item.Descendants())
-                {
-                    if (subitem != null)
-                    {
-                        if (subitem.Id == id)
-                            return ToSimpleCategory(subitem);
-                    }
-                }
-            }
-            return null;
+            return categories.First(cat => cat.Id == id);
         }
 
         public Product GetProductById(int id)
@@ -92,22 +99,123 @@ namespace Shop.Data.File
             return products.AsEnumerable();
         }
 
-        public Category GetCategoryTreeById(int id)
+        public Category GetFullCategoryById(int id)
         {
-            foreach (var item in categories)
+            return categoryTree.First(cat => cat.Id == id);
+        }
+
+        public IEnumerable<Category> GetCategoriesWithProducts()
+        {
+            var res = GetCategories();
+            foreach (var cat in res)
             {
-                if (item.Id == id)
-                    return ToFullCategory(item);
-                foreach (var subitem in item.Descendants())
-                {
-                    if (subitem != null)
-                    {
-                        if (subitem.Id == id)
-                            return ToFullCategory(subitem);
-                    }
-                }
+                cat.Products = from p in products join link in productCategories on p.Id equals link.ProductId join cats in res on link.CategoryId equals cat.Id select p;
             }
-            return null;
+            return res;
+        }
+
+        public IEnumerable<Category> GetFullCategoriesWithProducts()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Category GetCategoryWithProductsById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Category GetFullCategoryWithProductsById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Product GetProductWithCategories(Product product)
+        {
+            var res = product.Clone();
+            res.Categories = from category in categories
+                             join link in productCategories on category.Id equals link.CategoryId
+                             where link.ProductId == res.Id
+                             select category;
+            return res;
+        }
+
+        public IEnumerable<Product> GetProductsWithCategories()
+        {
+            return from p in products select GetProductWithCategories(p);
+        }
+
+        public IEnumerable<Category> GetCategoriesByProductId(int id)
+        {
+            return (from category in categories
+                    join link in productCategories on category.Id equals link.CategoryId
+                    where link.ProductId == id
+                    select category).AsEnumerable();
+        }
+
+        private Category ToTreeModel(Category parent, Category child)
+        {
+            return new Category() {
+                Description = parent.Description,
+                Id = parent.Id,
+                Name = parent.Name,
+                Parent = parent.Parent,
+                Products = parent.Products?.ToList(),
+                Subcategories = new List<Category>() { child } };
+        }
+
+        private Category GetPrevious(int id, bool full)
+        {
+            var current = full ? GetFullCategoryById(id) : GetCategoryById(id);
+            if (current.Parent == null)
+                return null;
+            else
+                return ToTreeModel(current.Parent, current);
+        }
+
+        private Category GetPrevious(Category value)
+        {
+            return value.Parent == null ? null : ToTreeModel(value.Parent, value);
+        }
+
+        private Category GetFirst(int id, bool full)
+        {
+            var prev = GetPrevious(id, full);
+            if (prev == null)
+                return GetCategoryById(id);
+            else
+                return GetFirst(prev);
+        }
+
+        private Category GetFirst(Category value)
+        {
+            var prev = GetPrevious(value);
+            if (prev == null)
+                return value;
+            else
+                return GetFirst(prev);
+        }
+
+        public IEnumerable<Category> GetFullCategoriesByProductId(int id)
+        {
+            return (from category in categoryTree
+                    join link in productCategories on category.Id equals link.CategoryId
+                    where link.ProductId == id
+                    select GetFirst(category)).AsEnumerable();
+        }
+
+        public IEnumerable<Product> GetProductsByCategoryId(int id)
+        {
+            var res = (from product in products
+                       join link in productCategories on product.Id equals link.ProductId
+                       where link.CategoryId == id
+                       select product).ToList();
+            var cat = GetFullCategoryById(id);
+            if ((cat != null) && (cat.Subcategories != null))
+            {
+                foreach (var subcat in cat.Subcategories)
+                    res.AddRange(GetProductsByCategoryId(subcat.Id));
+            }
+            return res.AsEnumerable();
         }
     }
 }

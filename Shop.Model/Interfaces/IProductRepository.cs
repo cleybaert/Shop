@@ -8,12 +8,14 @@ namespace Shop.Model.Interfaces
     public interface IProductRepository
     {
         IEnumerable<Product> GetProducts();
-        //IEnumerable<Product> GetProductsWithCategories();
+        IEnumerable<Product> GetProductsWithCategories();
         Product GetProductById(int id);
+        IEnumerable<Category> GetCategoriesByProductId(int id);
+        IEnumerable<Product> GetProductsByCategoryId(int id);
+        IEnumerable<Category> GetFullCategoriesByProductId(int id);
         IEnumerable<Category> GetCategories();
-        IEnumerable<Category> GetCategoriesInTree();
-        //IEnumerable<Category> GetCategoriesWithProducts();
+        IEnumerable<Category> GetFullCategories();
         Category GetCategoryById(int id);
-        Category GetCategoryTreeById(int id);
+        Category GetFullCategoryById(int id);
     }
 }

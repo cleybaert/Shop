@@ -1,17 +1,12 @@
-﻿using System;
+﻿using Shop.Model.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Shop.Data.Models
+namespace ShopAPI.Models
 {
-    public class ProductPreview
-    {
-        public string Thumbnail { get; set; }
-        public string Detail { get; set; }
-    }
-
-    public class Product
+    public class ProductModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -20,5 +15,7 @@ namespace Shop.Data.Models
         public IEnumerable<string> AvailableSizes { get; set; }
         public string Url { get; set; }
         public IEnumerable<ProductPreview> Previews { get; set; }
+
+        public virtual IEnumerable<ProductCategoryModel> Categories { get; set; }
     }
 }

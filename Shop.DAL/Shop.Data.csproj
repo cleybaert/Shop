@@ -6,7 +6,15 @@
 
   <ItemGroup>
     <None Remove="categories.json" />
+    <None Remove="File\Data\productcategories.json" />
     <None Remove="products.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="File\Data\productcategories.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
