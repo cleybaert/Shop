@@ -3,11 +3,11 @@ using Shop.Model.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Linq.Dynamic.Core;
 using Shop.Data.File.Extensions;
-using System.Reflection;
-using System.Diagnostics;
 using Shop.Data.File.Entities;
+using Shop.Model.Parameters;
+using PagedList;
 
 namespace Shop.Data.File
 {
@@ -26,7 +26,7 @@ namespace Shop.Data.File
 
             // get all categories in one list
 
-            var allcats  = categorySource.Select(cat => ToSimpleCategory(cat)).ToList();
+            var allcats = categorySource.Select(cat => ToSimpleCategory(cat)).ToList();
             foreach (var cat in categorySource)
                 allcats.AddRange(cat.Descendants().Select(subcat => ToSimpleCategory(subcat)));
             categories = allcats.AsQueryable();
@@ -42,6 +42,7 @@ namespace Shop.Data.File
                 cat.Parent = parent ?? null;
             }
             categoryTree = allcats.AsQueryable();
+
         }
 
         private Category ToSimpleCategory(Category value)
@@ -55,9 +56,9 @@ namespace Shop.Data.File
                 Products = null,
                 Subcategories = null
             };
-        }       
-        
-        private Category ToFullCategory(Category value, Category parent =  null)
+        }
+
+        private Category ToFullCategory(Category value, Category parent = null)
         {
             var res = new Category()
             {
@@ -96,7 +97,7 @@ namespace Shop.Data.File
 
         public IEnumerable<Product> GetProducts()
         {
-            return products.AsEnumerable();
+            return products.ToList();
         }
 
         public Category GetFullCategoryById(int id)
@@ -149,7 +150,7 @@ namespace Shop.Data.File
             return (from category in categories
                     join link in productCategories on category.Id equals link.CategoryId
                     where link.ProductId == id
-                    select category).AsEnumerable();
+                    select category).ToList();
         }
 
         private Category ToTreeModel(Category parent, Category child)
@@ -195,12 +196,22 @@ namespace Shop.Data.File
                 return GetFirst(prev);
         }
 
-        public IEnumerable<Category> GetFullCategoriesByProductId(int id)
+        private IQueryable<Category> GetAllCategoriesByProductId(int id)
+        {
+            var root = GetCategoryTreeByProductId(id);
+            if (root != null)
+                return root.Descendants().AsQueryable();
+            else
+                return new List<Category>().AsQueryable();
+            
+        }
+
+        public Category GetCategoryTreeByProductId(int id)
         {
             return (from category in categoryTree
                     join link in productCategories on category.Id equals link.CategoryId
                     where link.ProductId == id
-                    select GetFirst(category)).AsEnumerable();
+                    select GetFirst(category)).First();
         }
 
         public IEnumerable<Product> GetProductsByCategoryId(int id)
@@ -216,6 +227,42 @@ namespace Shop.Data.File
                     res.AddRange(GetProductsByCategoryId(subcat.Id));
             }
             return res.AsEnumerable();
+        }
+
+        public PagedList<Product> GetProducts(ProductParameters param)
+        {
+            var parents = from category in categoryTree
+                          where category.Parent == null
+                          select category;
+            var child = from product in products
+                        join link in productCategories on product.Id equals link.ProductId
+                        join category in categoryTree on link.CategoryId equals category.Id
+                        join subcats in categoryTree on category.Parent equals subcats.Parent
+                        select 
+
+            IQueryable<Product> beforePaging;
+
+            if (string.IsNullOrEmpty(param.Category))
+                beforePaging = products.OrderBy(param.OrderBy);
+            else
+            {
+                var total = products
+                    .Join(productCategories, p => p.Id, link => link.ProductId, (p, link) => new { p, link.CategoryId })
+                    .Join(GetAllCategoriesByProductId(, p => p.CategoryId, c => c.Id, (link, c) => new { link.p, c.Name });
+                beforePaging = total
+                    .Where(row => row.Name == param.Category)
+                    .OrderBy(param.OrderBy)
+                    .Select(row => row.p)
+                    .Distinct();
+                //from product in products
+                //           join link in productCategories on product.Id equals link.ProductId
+                //           join category in categoryTree on link.CategoryId equals category.Id
+                //           where category.Name == param.Category
+                //           orderby param.OrderBy
+                //           select product;
+            }
+            
+            return new PagedList<Product>(beforePaging, param.PageNumber, param.PageSize);
         }
     }
 }

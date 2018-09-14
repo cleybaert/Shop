@@ -2,7 +2,7 @@
 using Shop.Data.Entities;
 using Shop.Model.Entities;
 using Shop.ViewModels;
-using ShopAPI.Models;
+using Shop.API.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -4,7 +4,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Model.Entities;
 using Shop.Model.Interfaces;
-using ShopAPI.Models;
+using Shop.API.Models;
+using Shop.Model.Parameters;
 
 namespace Shop.Controllers
 {
@@ -25,12 +26,14 @@ namespace Shop.Controllers
 
         // GET api/products
         [HttpGet]
-        public IEnumerable<ProductModel> Get(bool categories = false)
+        public IActionResult Get(ProductParameters param)
         {
-            if (categories)
-                return repository.GetProductsWithCategories().Select(prod => mapper.Map<ProductModel>(prod));
-            else
-                return repository.GetProducts().Select(prod => mapper.Map<ProductModel>(prod));
+            //if (categories)
+            //    return repository.GetProductsWithCategories().Select(prod => mapper.Map<ProductModel>(prod));
+            //else
+            //    return repository.GetProducts().Select(prod => mapper.Map<ProductModel>(prod));
+            var products = repository.GetProducts(param);
+            return Ok(products);
         }
 
         // GET api/products/5
@@ -40,14 +43,18 @@ namespace Shop.Controllers
             return repository.GetProductById(id);
         }
 
-        // GET api/products/5
+        // GET api/products/5/categories
         [HttpGet("{id}/categories")]
-        public IEnumerable<CategoryModel> GetCategories(int id, bool full = false)
+        public IEnumerable<CategoryModel> GetCategories(int id)
         {
-            if (full)
-                return repository.GetFullCategoriesByProductId(id).Select(cat => mapper.Map<CategoryModel>(cat));
-            else
-                return repository.GetCategoriesByProductId(id).Select(cat => mapper.Map<CategoryModel>(cat));
+             return repository.GetCategoriesByProductId(id).Select(cat => mapper.Map<CategoryModel>(cat));
+        }
+
+        // GET api/products/5/categorytree
+        [HttpGet("{id}/categorytree")]
+        public CategoryModel GetCategoryTree(int id)
+        {
+            return mapper.Map<CategoryModel>(repository.GetCategoryTreeByProductId(id));
         }
     }
 }

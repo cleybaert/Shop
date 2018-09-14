@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Shop.Model.Interfaces;
 using Shop.Model.Entities;
 using System.Linq;
-using ShopAPI.Models;
+using Shop.API.Models;
 using AutoMapper;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

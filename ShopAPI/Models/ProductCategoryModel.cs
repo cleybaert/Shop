@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ShopAPI.Models
+namespace Shop.API.Models
 {
     public class ProductCategoryModel
     {

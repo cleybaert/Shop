@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopAPI", "ShopAPI\ShopAPI.csproj", "{51F6E612-D628-494D-A3DA-FFBF24F7C950}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.API", "ShopAPI\Shop.API.csproj", "{51F6E612-D628-494D-A3DA-FFBF24F7C950}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.Data", "Shop.DAL\Shop.Data.csproj", "{0F5827F7-D246-41C4-8194-F91E2522DB69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.Data", "Shop.DAL\Shop.Data.csproj", "{0F5827F7-D246-41C4-8194-F91E2522DB69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.Model", "Shop.Model\Shop.Model.csproj", "{462FD4FE-8AFF-48B6-9ACD-CA1C1A2F272F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.Model", "Shop.Model\Shop.Model.csproj", "{462FD4FE-8AFF-48B6-9ACD-CA1C1A2F272F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

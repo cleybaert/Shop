@@ -5,9 +5,11 @@ namespace Shop.Data.File.Extensions
 {
     public static class CategoryExtension
     {
-        public static IEnumerable<Category> Descendants(this Category category)
+        public static IEnumerable<Category> Descendants(this Category category, bool selfIncluded = false)
         {
             var des = new List<Category>();
+            if (selfIncluded)
+                des.Add(category);
             foreach (var item in category.Subcategories)
             {
                 des.Add(item);

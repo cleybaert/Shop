@@ -29,6 +29,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="PagedList.Mvc" Version="4.5.0" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.8.18" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Shop.Model\Shop.Model.csproj" />
   </ItemGroup>
 

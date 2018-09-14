@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShopAPI.Models
+namespace Shop.API.Models
 {
     public class ProductModel
     {
