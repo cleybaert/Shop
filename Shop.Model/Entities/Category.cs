@@ -10,6 +10,8 @@ namespace Shop.Model.Entities
         public IEnumerable<Category> Subcategories { get; set; }
 
         public virtual IEnumerable<Product> Products { get; set; }
+
+        public virtual int ParentId { get; set; } = -1;
         public virtual Category Parent { get; set; }
     }
 }

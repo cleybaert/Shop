@@ -40,6 +40,7 @@ namespace Shop.Data.File
             {
                 var parent = allcats.Find(p => (p.Subcategories == null ? false : p.Subcategories.Contains(cat)));
                 cat.Parent = parent ?? null;
+                cat.ParentId = parent == null ? -1 : parent.Id;
             }
             categoryTree = allcats.AsQueryable();
 
@@ -53,6 +54,7 @@ namespace Shop.Data.File
                 Id = value.Id,
                 Name = value.Name,
                 Parent = null,
+                ParentId = -1,
                 Products = null,
                 Subcategories = null
             };
@@ -66,6 +68,7 @@ namespace Shop.Data.File
                 Id = value.Id,
                 Name = value.Name,
                 Parent = parent != null ? parent : null,
+                ParentId = parent == null ? -1 : parent.Id,
                 Products = null,
                 // ToDo: set parent value on subcategories + call ToFullCategory on them
                 Subcategories = null
@@ -159,7 +162,8 @@ namespace Shop.Data.File
                 Description = parent.Description,
                 Id = parent.Id,
                 Name = parent.Name,
-                Parent = parent.Parent,
+                Parent = parent.Parent?? null,
+                ParentId = parent.Parent == null ? -1 : parent.Parent.Id,
                 Products = parent.Products?.ToList(),
                 Subcategories = new List<Category>() { child } };
         }
@@ -231,37 +235,24 @@ namespace Shop.Data.File
 
         public PagedList<Product> GetProducts(ProductParameters param)
         {
-            var parents = from category in categoryTree
-                          where category.Parent == null
-                          select category;
-            var child = from product in products
-                        join link in productCategories on product.Id equals link.ProductId
-                        join category in categoryTree on link.CategoryId equals category.Id
-                        join subcats in categoryTree on category.Parent equals subcats.Parent
-                        select 
-
             IQueryable<Product> beforePaging;
 
             if (string.IsNullOrEmpty(param.Category))
-                beforePaging = products.OrderBy(param.OrderBy);
+                beforePaging = from product in products select product;
             else
             {
-                var total = products
-                    .Join(productCategories, p => p.Id, link => link.ProductId, (p, link) => new { p, link.CategoryId })
-                    .Join(GetAllCategoriesByProductId(, p => p.CategoryId, c => c.Id, (link, c) => new { link.p, c.Name });
-                beforePaging = total
-                    .Where(row => row.Name == param.Category)
-                    .OrderBy(param.OrderBy)
-                    .Select(row => row.p)
-                    .Distinct();
-                //from product in products
-                //           join link in productCategories on product.Id equals link.ProductId
-                //           join category in categoryTree on link.CategoryId equals category.Id
-                //           where category.Name == param.Category
-                //           orderby param.OrderBy
-                //           select product;
+                beforePaging = from product in products
+                               join link in productCategories on product.Id equals link.ProductId
+                               join cat1 in categoryTree on link.CategoryId equals cat1.Id
+                               join cat2 in categoryTree on cat1.ParentId equals cat2.Id
+                               join cat3 in categoryTree on cat2.ParentId equals cat3.Id
+                               where (cat1.Name.Equals(param.Category, StringComparison.InvariantCultureIgnoreCase)
+                               || cat2.Name.Equals(param.Category, StringComparison.InvariantCultureIgnoreCase)
+                               || cat3.Name.Equals(param.Category, StringComparison.InvariantCultureIgnoreCase))
+                               select product;
             }
-            
+            beforePaging = beforePaging.OrderBy(param.OrderBy);
+
             return new PagedList<Product>(beforePaging, param.PageNumber, param.PageSize);
         }
     }
