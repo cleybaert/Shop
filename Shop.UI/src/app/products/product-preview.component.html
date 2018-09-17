@@ -1,0 +1,16 @@
+<div class="card">
+  <div class="opcontainer">
+    <a class="nav-link" routerLink="/products/{{product.id}}">
+      <div class="image">
+        <img class="card-img-top" src="{{product.url}}" alt="{{product.name}}" class="img-fluid">
+      </div>
+      <div class="middle">
+        <div class="btn btn-dark">Add to cart</div>
+      </div>
+    </a>
+  </div>
+  <div class="card-body">
+    <a class="card-body-text" routerLink="/products/{{product.id}}">{{product.name}}</a>
+    <div class="card-body-text">{{product.price | currency:'EUR' }}</div>
+  </div>
+</div>

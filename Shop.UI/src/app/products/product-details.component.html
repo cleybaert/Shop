@@ -1,0 +1,60 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-1 col-md-1 col-sm-1 d-none d-sm-block">
+      <div class="row" *ngFor="let preview of product.previews; let i = index" [attr.data-index]="i" text-align="centre">
+          <img src="{{preview.thumbnail}}" alt="thumbnail" [ngClass]="i == 0 ? 'thumbnail center cursor active' : 'thumbnail center cursor'" [attr.data-slide-to]="i" data-target="#myCarousel" (click)="currentSlide(i)">
+      </div>
+    </div>
+    <div class="col-lg-5 col-md-5 col-sm-11 col-12">
+      <div id="myCarousel" class="carousel slide">
+
+        <!-- main slider carousel items -->
+        <div class="carousel-inner">
+          <div *ngFor="let preview of product.previews; let i = index" [ngClass]="i == 0 ? 'carousel-item active' : 'carousel-item'" [attr.data-slide-number]="i">
+            <img class="img-fluid" src="{{preview.detail}}" alt="Slide {{i}}">
+          </div>
+
+          <!-- Left and right controls -->
+          <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+
+        </div>
+
+      </div>
+    </div>
+    <div class="col">
+      <div class="row">
+        <h1 class="text-dark">{{product.name}}</h1>
+      </div>
+      <div class="row">
+        <small>Artikelnr: {{product.id}}</small>
+      </div>
+      <div class="row">
+        <h1 class="text-info">{{product.price | currency:'EUR' }}</h1>
+      </div>
+      <div class="row">
+        <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col">
+              <div class="row">
+                <select class="custom-select" id="inputGroupSelect01" formControlName="size">
+                  <option selected value=null>Choose size...</option>
+                  <option *ngFor="let size of product.availableSizes" value="{{size}}">{{size}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col">
+              <button class="btn btn-success" type="submit" [disabled]="!orderForm.valid">Add to cart</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
