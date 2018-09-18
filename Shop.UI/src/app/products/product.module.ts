@@ -45,7 +45,7 @@ const routes: Routes = [
     ProductDetailsGeneralComponent,
     ProductDetailsDetailedComponent,
     ProductListComponent,
-    ProductPreviewComponent
+    ProductPreviewComponent,
   ]
 })
 export class ProductModule {

@@ -1,3 +1,9 @@
+<nav aria-label="breadcrumb" *ngIf="selectedTree.length > 0">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-front">Je bent hier: </li>
+    <li class="breadcrumb-item" *ngFor="let item of selectedTree"><a [routerLink]="['/products']" [queryParams]="{ category: item.id}">{{item.name}}</a></li>
+  </ol>
+</nav>
 <div class="card-deck">
   <app-product-preview *ngFor="let product of products" [product]="product"></app-product-preview>
 </div>

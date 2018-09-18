@@ -32,6 +32,7 @@ namespace Shop.Controllers
         {
             if (full)
                 return repository.GetFullCategories()
+                                    .Where(c => c.Parent == null)
                                     .Select(c => mapper.Map<CategoryModel>(c));
             else
                 return repository.GetCategories()
@@ -46,6 +47,13 @@ namespace Shop.Controllers
                 return mapper.Map<CategoryModel>(repository.GetFullCategoryById(id));
             else
                 return mapper.Map<CategoryModel>(repository.GetCategoryById(id));            
+        }
+
+        // GET api/categories/5/parent
+        [HttpGet("{id}/path")]
+        public IEnumerable<CategoryModel> GetCategoryPath(int id)
+        {
+            return repository.GetCategoryPath(id).Select(cat => mapper.Map<CategoryModel>(cat));
         }
 
         // GET api/categories/5

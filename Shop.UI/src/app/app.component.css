@@ -1,0 +1,54 @@
+.dropdown-content {
+  display: none;
+  margin-top: -10px;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+.navbar-brand{
+  line-height: 50px;
+}
+.nav {
+  margin-bottom: 0;
+}
+.dropdown {
+  position: static;
+}
+.dropdown-menu {
+  width: 100%;
+}
+#navbartop {
+  padding: 0px;
+}
+.categorydropdown:hover, .dropdown:hover .categorydropdown{
+  border-bottom: 4px solid crimson;
+  text-decoration: none;
+}
+.card, .card-header{
+  background-color: white;
+  border-style: none;
+}
+.card-body{
+  border-style: none;
+}
+.list-group-header{
+  font-weight: bold;
+  color: black;
+}
+.list-group-link{
+  color: black;
+}
+.list-group-item
+{
+  border-style: solid none solid none;
+  border-radius: 0;
+}
+.list-group-item:first-child
+{
+  border-style: none none solid none;
+  border-radius: 0;
+}
+.list-group-item:hover{
+  border-bottom-color: crimson;
+}
+

@@ -20,5 +20,6 @@ namespace Shop.Model.Interfaces
         IEnumerable<Category> GetFullCategories();
         Category GetCategoryById(int id);
         Category GetFullCategoryById(int id);
+        IEnumerable<Category> GetCategoryPath(int id);
     }
 }

@@ -18,5 +18,9 @@
   {
     "productid": 4,
     "categoryid": 12
+  },
+  {
+    "productid": 5,
+    "categoryid": 4
   }
 ]

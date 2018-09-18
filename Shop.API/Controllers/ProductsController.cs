@@ -28,10 +28,6 @@ namespace Shop.Controllers
         [HttpGet]
         public IActionResult Get(ProductParameters param)
         {
-            //if (categories)
-            //    return repository.GetProductsWithCategories().Select(prod => mapper.Map<ProductModel>(prod));
-            //else
-            //    return repository.GetProducts().Select(prod => mapper.Map<ProductModel>(prod));
             var products = repository.GetProducts(param);
             return Ok(products);
         }

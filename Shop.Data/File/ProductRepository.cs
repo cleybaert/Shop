@@ -90,12 +90,12 @@ namespace Shop.Data.File
 
         public Category GetCategoryById(int id)
         {
-            return categories.First(cat => cat.Id == id);
+            return categories.FirstOrDefault(cat => cat.Id == id);
         }
 
         public Product GetProductById(int id)
         {
-            return products.First(item => item.Id == id);
+            return products.FirstOrDefault(item => item.Id == id);
         }
 
         public IEnumerable<Product> GetProducts()
@@ -105,7 +105,7 @@ namespace Shop.Data.File
 
         public Category GetFullCategoryById(int id)
         {
-            return categoryTree.First(cat => cat.Id == id);
+            return categoryTree.FirstOrDefault(cat => cat.Id == id);
         }
 
         public IEnumerable<Category> GetCategoriesWithProducts()
@@ -215,7 +215,7 @@ namespace Shop.Data.File
             return (from category in categoryTree
                     join link in productCategories on category.Id equals link.CategoryId
                     where link.ProductId == id
-                    select GetFirst(category)).First();
+                    select GetFirst(category)).FirstOrDefault();
         }
 
         public IEnumerable<Product> GetProductsByCategoryId(int id)
@@ -241,19 +241,37 @@ namespace Shop.Data.File
                 beforePaging = from product in products select product;
             else
             {
-                beforePaging = from product in products
+                beforePaging = (from product in products
                                join link in productCategories on product.Id equals link.ProductId
                                join cat1 in categoryTree on link.CategoryId equals cat1.Id
-                               join cat2 in categoryTree on cat1.ParentId equals cat2.Id
-                               join cat3 in categoryTree on cat2.ParentId equals cat3.Id
+                               join cat2 in categoryTree on cat1.ParentId equals cat2.Id into pc2
+                               from subcat2 in pc2.DefaultIfEmpty(new Category() { Name = cat1.Name, ParentId = cat1.Id })
+                               join cat3 in categoryTree on subcat2.ParentId equals cat3.Id into pc3
+                               from subcat3 in pc3.DefaultIfEmpty(new Category() { Name = cat1.Name, ParentId = cat1.Id })
                                where (cat1.Name.Equals(param.Category, StringComparison.InvariantCultureIgnoreCase)
-                               || cat2.Name.Equals(param.Category, StringComparison.InvariantCultureIgnoreCase)
-                               || cat3.Name.Equals(param.Category, StringComparison.InvariantCultureIgnoreCase))
-                               select product;
+                               || subcat2.Name.Equals(param.Category, StringComparison.InvariantCultureIgnoreCase)
+                               || subcat3.Name.Equals(param.Category, StringComparison.InvariantCultureIgnoreCase))
+                               select product).Distinct();
             }
             beforePaging = beforePaging.OrderBy(param.OrderBy);
 
             return new PagedList<Product>(beforePaging, param.PageNumber, param.PageSize);
+        }
+
+        public IEnumerable<Category> GetCategoryPath(int id)
+        {
+            var root = GetFirst(id, true);
+            var res = new List<Category>();
+            res.Add(root);
+            foreach (var item in root.Descendants())
+            {
+                res.Add(item);
+                if (item.Id == id)
+                {
+                    return res;
+                }
+            }
+            return res;
         }
     }
 }

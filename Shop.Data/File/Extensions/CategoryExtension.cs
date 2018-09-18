@@ -10,10 +10,16 @@ namespace Shop.Data.File.Extensions
             var des = new List<Category>();
             if (selfIncluded)
                 des.Add(category);
-            foreach (var item in category.Subcategories)
+            if (category.Subcategories != null)
             {
-                des.Add(item);
-                des.AddRange(item.Descendants());
+                foreach (var item in category.Subcategories)
+                {
+                    if (item != null)
+                    {
+                        des.Add(item);
+                        des.AddRange(item.Descendants());
+                    }                    
+                }
             }
             return des;
         }

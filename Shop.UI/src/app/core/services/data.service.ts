@@ -2,15 +2,15 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IProduct } from '../entities/product';
 import { tap, catchError, map } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
-import { Order, OrderItem } from '../entities/order';
-import { OrderItemViewModel } from '../viewmodels/order-item';
-import { OrderViewModel } from '../viewmodels/order';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Order } from '../entities/order';
 
 @Injectable({providedIn: 'root'})
 
 export class DataService {
-  private baseUrl = 'http://localhost:4377/api/products';
+  private baseUrl = 'http://localhost:4377/api';
+  private productsUrl = this.baseUrl + '/products';
+  private categoriesUrl = this.baseUrl + '/categories';
   order: Order;
   products: IProduct[] = [];
 
@@ -18,9 +18,15 @@ export class DataService {
     this.order = new Order();
   }
 
-  getProducts(): Observable<IProduct[]> {
+  getProducts(params?): Observable<IProduct[]> {
+    let requestparams = new HttpParams();
+
+    if (params != null) {
+      requestparams = requestparams.append('category', params.category);
+    }
+
     return this.http
-    .get(this.baseUrl)
+    .get(this.productsUrl, {params: requestparams})
     .pipe(
       tap(data => {
         console.log('getProducts: ' + JSON.stringify(data));
@@ -34,7 +40,7 @@ export class DataService {
   }
 
   getProduct(id: number): Observable<IProduct> {
-    const url = `${this.baseUrl}/${id}`;
+    const url = `${this.productsUrl}/${id}`;
     return this.http
     .get(url)
     .pipe(

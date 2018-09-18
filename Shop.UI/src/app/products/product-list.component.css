@@ -1,0 +1,10 @@
+.breadcrumb{
+  background-color: white;
+}
+.breadcrumb-front{
+  margin-right: 10px;
+}
+.breadcrumb, .breadcrumb-item a{
+  color: black;
+  font-size: small;
+}
