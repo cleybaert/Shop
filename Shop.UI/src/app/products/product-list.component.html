@@ -1,31 +1,42 @@
 <div class="row">
-  <nav aria-label="breadcrumb" *ngIf="selectedTree.length > 0">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-front">Je bent hier: </li>
-      <li class="breadcrumb-item" *ngFor="let item of selectedTree"><a [routerLink]="['/products']" [queryParams]="{ category: item.id}">{{item.name}}</a></li>
-    </ol>
-  </nav>
 </div>
 <div class="row">
   <div class="col-2">
     <nav class="sidenav">
       <div class="card" *ngIf="selectedCategory.subCategories.length > 0">
-          <div class="card-header">
-            Categories
-          </div>
-          <div class="card-body">
-            <ul class="list-group">
-              <li class="list-group-item" *ngFor="let subcat of selectedCategory.subCategories">
-                <a class="list-group-item-link" [routerLink]="['/products']" [queryParams]="{ category: subcat.id}">{{subcat.name}}</a>
-              </li>
+        <div class="card-header">
+          Categories
+        </div>
+        <div class="card-body">
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let subcat of selectedCategory.subCategories">
+              <a class="list-group-item-link" [routerLink]="['/products']" [queryParams]="{ category: subcat.id}">{{subcat.name}}</a>
+            </li>
           </ul>
-          </div>
+        </div>
       </div>
     </nav>
   </div>
   <div class="col-10">
-    <div class="card-deck">
-      <app-product-preview *ngFor="let product of products" [product]="product"></app-product-preview>
+    <div class="row">
+      <nav aria-label="breadcrumb" *ngIf="selectedTree.length > 0">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-front">Je bent hier: </li>
+          <li class="breadcrumb-item" *ngFor="let item of selectedTree"><a [routerLink]="['/products']" [queryParams]="{ category: item.id}">{{item.name}}</a></li>
+        </ol>
+      </nav>
+    </div>
+    <div class="row">
+      <div class="hero-image" [ngStyle]="{'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + selectedRootCategory.banner + ')'}">
+        <div class="hero-text">
+          <h1>{{selectedCategory.name}}</h1>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="card-deck">
+        <app-product-preview *ngFor="let product of products" [product]="product"></app-product-preview>
+      </div>
     </div>
   </div>
 </div>

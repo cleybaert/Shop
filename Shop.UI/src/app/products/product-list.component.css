@@ -1,8 +1,10 @@
 .breadcrumb{
   background-color: white;
+  height: 30px;
+  margin-top: 10px;
 }
 .breadcrumb-front{
-  margin: 0 10px 10px 30px;
+  margin: 0 10px 10px 0;
 }
 .breadcrumb, .breadcrumb-item a{
   color: black;
@@ -10,8 +12,9 @@
 }
 .sidenav{
   position: sticky;
-  top: 100px;
+  top: 80px;
   font-size: small;
+  margin-top: 20px;
 }
 .sidenav .list-group-item{
   border-style: none;
@@ -30,4 +33,27 @@
 .list-group-item-link:hover{
   border-bottom-color: crimson;
   border-bottom-style: solid;
+}
+
+/* The hero image */
+.hero-image {
+  /* Set a specific height */
+  height: 200px;
+
+
+  /* Position and center the image to scale nicely on all screens */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+}
+
+/* Place text in the middle of the image */
+.hero-text {
+  text-align: center;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
 }

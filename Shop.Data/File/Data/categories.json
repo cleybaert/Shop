@@ -3,28 +3,33 @@
     "id": 0,
     "name": "Clothing",
     "description": "",
+    "banner": "http://missandchicblog.com/wp-content/uploads/2016/02/Little_2_MissandChicBlog.jpg",
     "subcategories": [
       {
         "id": 1,
         "name": "Girls",
         "description": "",
+        "banner":  "",
         "subcategories": [
           {
             "id": 2,
             "name": "Dresses",
             "description": "",
+            "banner": "",
             "subcategories": []
           },
           {
             "id": 7,
             "name": "Pants",
             "description": "",
+            "banner": "",
             "subcategories": []
           },
           {
             "id": 12,
             "name": "Sweaters",
             "description": "",
+            "banner": "",
             "subcategories": []
           }
         ]
@@ -33,11 +38,13 @@
         "id": 8,
         "name": "Boys",
         "description": "",
+        "banner": "",
         "subcategories": [
           {
             "id": 9,
             "name": "Pants",
             "description": "",
+            "banner": "",
             "subcategories": []
           }
         ]
@@ -46,11 +53,13 @@
         "id": 10,
         "name": "Children",
         "description": "",
+        "banner": "",
         "subcategories": [
           {
             "id": 11,
             "name": "Pants",
             "description": "",
+            "banner": "",
             "subcategories": []
           }
         ]
@@ -61,11 +70,13 @@
     "id": 3,
     "name": "Eat and drink",
     "description": "",
+    "banner": "https://i.pinimg.com/originals/ef/14/2d/ef142db4b4943d63a9167833375126eb.jpg",
     "subcategories": [
       {
         "id": 4,
         "name": "Bibs",
         "description": "",
+        "banner": "",
         "subcategories": []
       }
     ]
@@ -74,11 +85,13 @@
     "id": 5,
     "name": "Sleeping",
     "description": "",
+    "banner": "http://hushhushlittlebaby.com/wp-content/uploads/2014/09/banner-7-hush.png",
     "subcategories": [
       {
         "id": 6,
         "name": "Sleeping bags",
         "description": "",
+        "banner": "",
         "subcategories": []
       }
     ]

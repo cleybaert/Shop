@@ -50,9 +50,6 @@
 .dropdown-full-width:hover .dropdown-fullwidth-content {
   display: block;
 }
-.dropdown-fullwidth-content .list-group-item:hover{
-  border-bottom-color: crimson;
-}
 .dropdown-fullwidth-content .card,
 .dropdown-fullwidth-content .card-header{
   border-style: none;
@@ -70,15 +67,15 @@
 .list-group-header{
   color: gray;
 }
-
+.list-group-link:hover,
+.list-group-header:hover{
+  border-bottom-color: crimson;
+  border-bottom-style: solid;
+}
 .dropdown-fullwidth-content .card .list-group-item
 {
-  border-style: solid none solid none;
+  border-style: none;
   border-radius: 0;
   cursor: pointer;
 }
-.dropdown-fullwidth-content .card .list-group-item:first-child
-{
-  border-style: none none solid none;
-  border-radius: 0;
-}
+
