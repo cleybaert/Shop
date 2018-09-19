@@ -27,7 +27,7 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item dropdown-full-width" *ngFor="let category of categories" routerLinkActive="active">
+        <li class="nav-item dropdown-full-width" *ngFor="let category of categories" routerLinkActive="active-nav-item">
           <a class="nav-link" [routerLink]="['/products']" [queryParams]="{ category: category.id}">{{category.name}}</a>
           <div class="dropdown-fullwidth-content">
             <div class="card-columns" id="custom-category-cards">
@@ -37,8 +37,8 @@
                         <li class="list-group-item">
                           <a class="list-group-header" [routerLink]="['/products']" [queryParams]="{ category: subcat.id}">{{subcat.name}}</a>
                         </li>
-                        <li class="list-group-item" *ngFor="let subcat2 of subcat.subCategories">
-                          <a class="list-group-link" [routerLink]="['/products']" [queryParams]="{ category: subcat2.id}">{{subcat2.name}}</a>
+                        <li class="list-group-item" *ngFor="let subcat2 of subcat.subCategories" [routerLink]="['/products']" [queryParams]="{ category: subcat2.id}">
+                          <div class="list-group-link">{{subcat2.name}}</div>
                         </li>
                       </ul>
                     </div>

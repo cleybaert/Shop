@@ -13,10 +13,14 @@
 #custom-bootstrap-submenu .nav-link{
   color: black;
 }
+#custom-bootstrap-submenu .active-nav-item .nav-link {
+  font-weight: bold;
+}
 #custom-bootstrap-submenu .nav-link:focus,
 #custom-bootstrap-submenu .nav-link:hover,
-#custom-bootstrap-submenu .dropdown-full-width:hover .nav-link{
-  border-bottom: 3px solid crimson;
+#custom-bootstrap-submenu .dropdown-full-width:hover .nav-link,
+#custom-bootstrap-submenu .active-nav-item{
+  border-bottom: 2px solid crimson;
 }
 .dropdown-fullwidth-content,
 .dropdown-fullwidth-content .list-group,
@@ -50,12 +54,12 @@
 }
 .list-group-link{
   color: gray;
-  text-decoration-line: none;
 }
 .dropdown-fullwidth-content .card .list-group-item
 {
   border-style: solid none solid none;
   border-radius: 0;
+  cursor: pointer;
 }
 .dropdown-fullwidth-content .card .list-group-item:first-child
 {
