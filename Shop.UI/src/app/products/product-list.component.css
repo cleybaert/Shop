@@ -2,9 +2,32 @@
   background-color: white;
 }
 .breadcrumb-front{
-  margin-right: 10px;
+  margin: 0 10px 10px 30px;
 }
 .breadcrumb, .breadcrumb-item a{
   color: black;
   font-size: small;
+}
+.sidenav{
+  position: sticky;
+  top: 100px;
+  font-size: small;
+}
+.sidenav .list-group-item{
+  border-style: none;
+  padding: 5px;
+}
+.sidenav .list-group-item:hover{
+  border-color: crimson;
+}
+.sidenav .card-body{
+  padding: 3px 3px 3px 15px
+}
+.list-group-item-link{
+  color: black;
+  text-decoration-line: none;
+}
+.list-group-item-link:hover{
+  border-bottom-color: crimson;
+  border-bottom-style: solid;
 }

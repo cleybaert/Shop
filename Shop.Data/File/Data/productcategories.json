@@ -22,5 +22,33 @@
   {
     "productid": 5,
     "categoryid": 4
+  },
+  {
+    "productid": 6,
+    "categoryid": 12
+  },
+  {
+    "productid": 7,
+    "categoryid": 12
+  },
+  {
+    "productid": 8,
+    "categoryid": 12
+  },
+  {
+    "productid": 9,
+    "categoryid": 12
+  },
+  {
+    "productid": 10,
+    "categoryid": 12
+  },
+  {
+    "productid": 11,
+    "categoryid": 12
+  },
+  {
+    "productid": 12,
+    "categoryid": 12
   }
 ]

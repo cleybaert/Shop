@@ -11,6 +11,7 @@ import { CategoryService } from '../core/services/category.service';
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
+  public selectedRootCategory: Category;
   public selectedCategory: Category;
   public selectedTree: Category[] = [];
   products: IProduct[];
@@ -29,13 +30,18 @@ export class ProductListComponent implements OnInit {
 
     this.route.queryParams.subscribe((params: any) => {
       const categoryId = params.category;
+
+      this.categoryService.getCategory(categoryId).subscribe(c =>
+        this.selectedCategory = c,
+        error => this.errorMessage = error);
+
       this.categoryService.getCategoryPath(categoryId)
       .subscribe(categories => {
         this.selectedTree = categories;
-        this.selectedCategory = categories.length > 0 ? categories[categories.length - 1] : null;
+        this.selectedRootCategory = categories.length > 0 ? categories[categories.length - 1] : null;
 
-        if (this.selectedCategory != null) {
-        this.dataService.getProducts({category: this.selectedCategory.name})
+        if (this.selectedRootCategory != null) {
+        this.dataService.getProducts({category: this.selectedRootCategory.name})
         .subscribe(products => this.products = products,
                 error => this.errorMessage = error);
         }
