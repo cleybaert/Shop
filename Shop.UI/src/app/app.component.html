@@ -20,17 +20,17 @@
   </div>
 </nav>
 <div class="container">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light" id="custom-bootstrap-submenu">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item dropdown" *ngFor="let category of categories" routerLinkActive="active">
-          <a class="nav-link categorydropdown" [routerLink]="['/products']" [queryParams]="{ category: category.id}">{{category.name}}</a>
-          <div class="dropdown-content dropdown-menu">
-            <div class="card-columns">
+        <li class="nav-item dropdown-full-width" *ngFor="let category of categories" routerLinkActive="active">
+          <a class="nav-link" [routerLink]="['/products']" [queryParams]="{ category: category.id}">{{category.name}}</a>
+          <div class="dropdown-fullwidth-content">
+            <div class="card-columns" id="custom-category-cards">
                 <div class="card" *ngFor="let subcat of category.subCategories">
                     <div class="card-body">
                       <ul class="list-group">
