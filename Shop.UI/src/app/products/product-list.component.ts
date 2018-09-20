@@ -37,7 +37,7 @@ export class ProductListComponent implements OnInit {
       this.categoryService.getCategory(categoryId).subscribe(c => {
         this.selectedCategory = c;
         if (this.selectedCategory != null) {
-          this.dataService.getProducts({category: this.selectedCategory.name})
+          this.dataService.getProducts(params)
           .subscribe(products => this.products = products,
                   error => this.errorMessage = error);
         }        
@@ -52,7 +52,7 @@ export class ProductListComponent implements OnInit {
         this.selectedTree = categories;
         this.selectedRootCategory = categories.length > 0 ? categories[0] : null;
       }, error => this.errorMessage = error);
-    });
+    });    
   }
 
   tagClick(key: string, value: string){

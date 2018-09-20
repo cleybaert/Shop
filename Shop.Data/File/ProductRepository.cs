@@ -177,7 +177,7 @@ namespace Shop.Data.File
         {
             IQueryable<Product> beforePaging;
 
-            if (string.IsNullOrEmpty(param.Category))
+            if (param.Category == -1)
                 beforePaging = (from product in products
                                where (param.Tags.Count() == 0 ? true : product.ContainsTags(param.Tags))
                                select product).Distinct();
@@ -190,9 +190,9 @@ namespace Shop.Data.File
                                 from subcat2 in pc2.DefaultIfEmpty(new Category() { Name = cat1.Name, ParentId = cat1.Id })
                                 join cat3 in categoryTree on subcat2.ParentId equals cat3.Id into pc3
                                 from subcat3 in pc3.DefaultIfEmpty(new Category() { Name = cat1.Name, ParentId = cat1.Id })
-                                where ((cat1.Name.Equals(param.Category, StringComparison.InvariantCultureIgnoreCase)
-                                || subcat2.Name.Equals(param.Category, StringComparison.InvariantCultureIgnoreCase)
-                                || subcat3.Name.Equals(param.Category, StringComparison.InvariantCultureIgnoreCase))
+                                where (((cat1.Id == param.Category)
+                                || (subcat2.Id == param.Category)
+                                || (subcat3.Id == param.Category))
                                 && (param.Tags.Count() == 0 ? true : product.ContainsTags(param.Tags)))
                                 select product).Distinct();
             }

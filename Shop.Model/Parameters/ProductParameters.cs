@@ -23,7 +23,7 @@ namespace Shop.Model.Parameters
 
         public int ProductId { get; set; }
 
-        public string Category { get; set; }
+        public int Category { get; set; } = -1;
         public string OrderBy { get; set; } = "Id";
         public Dictionary<string, IEnumerable<string>> Tags { get; set; }
     }

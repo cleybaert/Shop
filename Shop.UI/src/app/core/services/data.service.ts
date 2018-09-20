@@ -19,14 +19,8 @@ export class DataService {
   }
 
   getProducts(params?): Observable<IProduct[]> {
-    let requestparams = new HttpParams();
-
-    if (params != null) {
-      requestparams = requestparams.append('category', params.category);
-    }
-
     return this.http
-    .get(this.productsUrl, {params: requestparams})
+    .get(this.productsUrl, {params: params})
     .pipe(
       tap(data => {
         console.log('getProducts: ' + JSON.stringify(data));
