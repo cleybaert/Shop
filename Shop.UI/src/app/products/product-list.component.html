@@ -15,6 +15,18 @@
           </ul>
         </div>
       </div>
+      <div class="card" *ngFor="let tag of tags">
+        <div class="card-header">
+          {{tag.key}}
+        </div>
+        <div class="card-body">
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let value of tag.value">
+              <a class="list-group-item-link taglink" (click)="tagClick(tag.key, value)">{{value}}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </nav>
   </div>
   <div class="col-10">

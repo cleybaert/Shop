@@ -4,8 +4,12 @@
     "name": "Zomerkleedje",
     "description": "Kort kleedje voor in de zomer",
     "price": "44.95",
-    "availableSizes": [ "14", "16", "18" ],
     "url": "/assets/solange-flowers.jpg",
+    "tags": {
+      "size": [ "14", "16", "18" ],
+      "colour": [ "orange", "green" ],
+      "season": [ "autumn" ]
+    },
     "Previews": [
       {
         "Thumbnail": "https://shop.lilybalou.be/media/catalog/product/cache/thumbnail/88x88/beff4985b56e3afdbeabfc89641a4582/s/o/solange-flowersback.jpg",
@@ -26,8 +30,11 @@
     "name": "Broek",
     "description": "Jeans broek",
     "price": "79.95",
-    "availableSizes": [ "12", "14" ],
     "url": "/assets/fabian-royalblue.jpg",
+    "tags": {
+      "size": [ "12", "14" ],
+      "colour": [ "blue" ]
+    },
     "Previews": []
   },
   {

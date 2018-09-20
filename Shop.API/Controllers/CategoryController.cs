@@ -56,11 +56,21 @@ namespace Shop.Controllers
             return repository.GetCategoryPath(id).Select(cat => mapper.Map<CategoryModel>(cat));
         }
 
-        // GET api/categories/5
+        // GET api/categories/5/products
         [HttpGet("{id}/products")]
         public IEnumerable<ProductModel> GetProducts(int id)
         {
             return repository.GetProductsByCategoryId(id).Select(prod => mapper.Map<ProductModel>(prod));
+        }
+
+        // GET api/categories/5/tags
+        [HttpGet("{id}/tags")]
+        public IActionResult GetTags(int id)
+        {
+            var cat = repository.GetCategoryById(id);
+            if (cat == null)
+                return NotFound($"Category {id}");
+            return Ok(repository.GetTags(cat.Name).ToList());
         }
 
         private Exception HttpResponseException()

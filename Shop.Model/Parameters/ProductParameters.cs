@@ -25,5 +25,6 @@ namespace Shop.Model.Parameters
 
         public string Category { get; set; }
         public string OrderBy { get; set; } = "Id";
+        public Dictionary<string, IEnumerable<string>> Tags { get; set; }
     }
 }

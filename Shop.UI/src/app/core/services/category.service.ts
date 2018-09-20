@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Category } from '../entities/category';
 import { tap, catchError } from 'rxjs/operators';
+import { Tag } from '../entities/tag';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +43,17 @@ export class CategoryService {
     .pipe(
       tap(data => {
         console.log('getCategoryPath: ' + JSON.stringify(data));
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  getTags(id: number): Observable<Tag[]> {
+    return this.http
+    .get(this.categoriesUrl + '/' + id + '/tags')
+    .pipe(
+      tap(data => {
+        console.log('getTags: ' + JSON.stringify(data));
       }),
       catchError(this.handleError)
     );

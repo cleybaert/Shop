@@ -100,54 +100,9 @@ namespace Shop.Data.File
             return products.FirstOrDefault(item => item.Id == id);
         }
 
-        public IEnumerable<Product> GetProducts()
-        {
-            return products.ToList();
-        }
-
         public Category GetFullCategoryById(int id)
         {
             return categoryTree.FirstOrDefault(cat => cat.Id == id);
-        }
-
-        public IEnumerable<Category> GetCategoriesWithProducts()
-        {
-            var res = GetCategories();
-            foreach (var cat in res)
-            {
-                cat.Products = from p in products join link in productCategories on p.Id equals link.ProductId join cats in res on link.CategoryId equals cat.Id select p;
-            }
-            return res;
-        }
-
-        public IEnumerable<Category> GetFullCategoriesWithProducts()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Category GetCategoryWithProductsById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Category GetFullCategoryWithProductsById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        private Product GetProductWithCategories(Product product)
-        {
-            var res = product.Clone();
-            res.Categories = from category in categories
-                             join link in productCategories on category.Id equals link.CategoryId
-                             where link.ProductId == res.Id
-                             select category;
-            return res;
-        }
-
-        public IEnumerable<Product> GetProductsWithCategories()
-        {
-            return from p in products select GetProductWithCategories(p);
         }
 
         public IEnumerable<Category> GetCategoriesByProductId(int id)
@@ -203,24 +158,6 @@ namespace Shop.Data.File
                 return GetFirst(prev);
         }
 
-        private IQueryable<Category> GetAllCategoriesByProductId(int id)
-        {
-            var root = GetCategoryTreeByProductId(id);
-            if (root != null)
-                return root.Descendants().AsQueryable();
-            else
-                return new List<Category>().AsQueryable();
-            
-        }
-
-        public Category GetCategoryTreeByProductId(int id)
-        {
-            return (from category in categoryTree
-                    join link in productCategories on category.Id equals link.CategoryId
-                    where link.ProductId == id
-                    select GetFirst(category)).FirstOrDefault();
-        }
-
         public IEnumerable<Product> GetProductsByCategoryId(int id)
         {
             var res = (from product in products
@@ -241,20 +178,23 @@ namespace Shop.Data.File
             IQueryable<Product> beforePaging;
 
             if (string.IsNullOrEmpty(param.Category))
-                beforePaging = from product in products select product;
+                beforePaging = (from product in products
+                               where (param.Tags.Count() == 0 ? true : product.ContainsTags(param.Tags))
+                               select product).Distinct();
             else
             {
                 beforePaging = (from product in products
-                               join link in productCategories on product.Id equals link.ProductId
-                               join cat1 in categoryTree on link.CategoryId equals cat1.Id
-                               join cat2 in categoryTree on cat1.ParentId equals cat2.Id into pc2
-                               from subcat2 in pc2.DefaultIfEmpty(new Category() { Name = cat1.Name, ParentId = cat1.Id })
-                               join cat3 in categoryTree on subcat2.ParentId equals cat3.Id into pc3
-                               from subcat3 in pc3.DefaultIfEmpty(new Category() { Name = cat1.Name, ParentId = cat1.Id })
-                               where (cat1.Name.Equals(param.Category, StringComparison.InvariantCultureIgnoreCase)
-                               || subcat2.Name.Equals(param.Category, StringComparison.InvariantCultureIgnoreCase)
-                               || subcat3.Name.Equals(param.Category, StringComparison.InvariantCultureIgnoreCase))
-                               select product).Distinct();
+                                join link in productCategories on product.Id equals link.ProductId
+                                join cat1 in categoryTree on link.CategoryId equals cat1.Id
+                                join cat2 in categoryTree on cat1.ParentId equals cat2.Id into pc2
+                                from subcat2 in pc2.DefaultIfEmpty(new Category() { Name = cat1.Name, ParentId = cat1.Id })
+                                join cat3 in categoryTree on subcat2.ParentId equals cat3.Id into pc3
+                                from subcat3 in pc3.DefaultIfEmpty(new Category() { Name = cat1.Name, ParentId = cat1.Id })
+                                where ((cat1.Name.Equals(param.Category, StringComparison.InvariantCultureIgnoreCase)
+                                || subcat2.Name.Equals(param.Category, StringComparison.InvariantCultureIgnoreCase)
+                                || subcat3.Name.Equals(param.Category, StringComparison.InvariantCultureIgnoreCase))
+                                && (param.Tags.Count() == 0 ? true : product.ContainsTags(param.Tags)))
+                                select product).Distinct();
             }
             beforePaging = beforePaging.OrderBy(param.OrderBy);
 
@@ -272,6 +212,36 @@ namespace Shop.Data.File
                 if (item.Id == id)
                 {
                     return res;
+                }
+            }
+            return res;
+        }
+
+        public Dictionary<string, IEnumerable<string>> GetTags(string category)
+        {
+            var dicts = from p in ((from product in products
+                                    join link in productCategories on product.Id equals link.ProductId
+                                    join cat1 in categoryTree on link.CategoryId equals cat1.Id
+                                    join cat2 in categoryTree on cat1.ParentId equals cat2.Id into pc2
+                                    from subcat2 in pc2.DefaultIfEmpty(new Category() { Name = cat1.Name, ParentId = cat1.Id })
+                                    join cat3 in categoryTree on subcat2.ParentId equals cat3.Id into pc3
+                                    from subcat3 in pc3.DefaultIfEmpty(new Category() { Name = cat1.Name, ParentId = cat1.Id })
+                                    where (cat1.Name.Equals(category, StringComparison.InvariantCultureIgnoreCase)
+                                    || subcat2.Name.Equals(category, StringComparison.InvariantCultureIgnoreCase)
+                                    || subcat3.Name.Equals(category, StringComparison.InvariantCultureIgnoreCase))
+                                    select product).Distinct())
+                        select p.Tags;
+            var res = new Dictionary<string, IEnumerable<string>>();
+            foreach (var dict in dicts)
+            {
+                if (dict != null)
+                {
+                    foreach (var pair in dict)
+                    {
+                        if (!res.ContainsKey(pair.Key))
+                            res[pair.Key] = new List<string>();
+                        ((List<string>)res[pair.Key]).AddRange(pair.Value);
+                    }
                 }
             }
             return res;

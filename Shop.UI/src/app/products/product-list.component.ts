@@ -1,9 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IProduct } from '../core/entities/product';
 import { DataService } from '../core/services/data.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { Category } from '../core/entities/category';
 import { CategoryService } from '../core/services/category.service';
+import { Tag } from '../core/entities/tag';
 
 @Component({
   selector: 'app-product-list',
@@ -14,6 +15,7 @@ export class ProductListComponent implements OnInit {
   public selectedRootCategory: Category;
   public selectedCategory: Category;
   public selectedTree: Category[] = [];
+  public tags: Tag[] = [];
   products: IProduct[];
   categories: Category[] = [];
   errorMessage: string;
@@ -21,7 +23,8 @@ export class ProductListComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private route: ActivatedRoute,
-    private categoryService: CategoryService) { }
+    private categoryService: CategoryService,
+    private router: Router) { }
 
   ngOnInit() {
     this.categoryService.getCategories()
@@ -37,9 +40,12 @@ export class ProductListComponent implements OnInit {
           this.dataService.getProducts({category: this.selectedCategory.name})
           .subscribe(products => this.products = products,
                   error => this.errorMessage = error);
-          }
-        },
-        error => this.errorMessage = error);
+        }        
+      }, error => this.errorMessage = error);
+
+      this.categoryService.getTags(categoryId)
+      .subscribe(tags => this.tags = tags,
+              error => this.errorMessage = error);
 
       this.categoryService.getCategoryPath(categoryId)
       .subscribe(categories => {
@@ -47,6 +53,10 @@ export class ProductListComponent implements OnInit {
         this.selectedRootCategory = categories.length > 0 ? categories[0] : null;
       }, error => this.errorMessage = error);
     });
+  }
+
+  tagClick(key: string, value: string){
+    this.router.navigate(['/products'], { queryParams: { [key]: value}, queryParamsHandling: "merge" })
   }
 
 }

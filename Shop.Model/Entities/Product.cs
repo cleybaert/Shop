@@ -8,9 +8,9 @@ namespace Shop.Model.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public double Price { get; set; }
-        public IEnumerable<string> AvailableSizes { get; set; }
         public string Url { get; set; }
         public IEnumerable<ProductPreview> Previews { get; set; }
+        public Dictionary<string, IEnumerable<string>> Tags { get; set; }
 
         public virtual IEnumerable<Category> Categories { get; set; }
     }

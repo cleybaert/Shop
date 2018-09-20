@@ -28,6 +28,18 @@ namespace Shop.Controllers
         [HttpGet]
         public IActionResult Get(ProductParameters param)
         {
+            var keys = from propinfo in typeof(ProductParameters).GetProperties() select propinfo.Name.ToLower();
+            var tags = from query in Request.Query where (!keys.Contains(query.Key.ToLower())) select query;
+            param.Tags = new Dictionary<string, IEnumerable<string>>();
+            foreach (var tag in tags)
+            {
+                if (!param.Tags.ContainsKey(tag.Key))
+                    param.Tags[tag.Key] = new List<string>();
+                foreach (var stringitem in tag.Value)
+                {
+                    ((List<string>)(param.Tags[tag.Key])).Add(stringitem);
+                }                
+            }
             var products = repository.GetProducts(param);
             return Ok(products);
         }
@@ -44,13 +56,6 @@ namespace Shop.Controllers
         public IEnumerable<CategoryModel> GetCategories(int id)
         {
              return repository.GetCategoriesByProductId(id).Select(cat => mapper.Map<CategoryModel>(cat));
-        }
-
-        // GET api/products/5/categorytree
-        [HttpGet("{id}/categorytree")]
-        public CategoryModel GetCategoryTree(int id)
-        {
-            return mapper.Map<CategoryModel>(repository.GetCategoryTreeByProductId(id));
         }
     }
 }

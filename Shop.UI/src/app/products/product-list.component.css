@@ -57,3 +57,7 @@
   transform: translate(-50%, -50%);
   color: white;
 }
+
+.taglink{
+  cursor: pointer;
+}
