@@ -1,0 +1,8 @@
+{
+  "name": "ShopApp",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular",
+  "pro_id": "4577b45b"
+}

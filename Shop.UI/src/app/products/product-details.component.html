@@ -45,7 +45,7 @@
               <div class="row">
                 <select class="custom-select" id="inputGroupSelect01" formControlName="size">
                   <option selected value=null>Choose size...</option>
-                  <option *ngFor="let size of product.availableSizes" value="{{size}}">{{size}}</option>
+                  <option *ngFor="let size of currentSizes()" value="{{size}}">{{size}}</option>
                 </select>
               </div>
             </div>

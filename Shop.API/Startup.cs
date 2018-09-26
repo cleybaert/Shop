@@ -96,12 +96,12 @@ namespace Shop
             {
                 app.UseDeveloperExceptionPage();
 
-                //// Seed the database
-                //using (var scope = app.ApplicationServices.CreateScope())
-                //{
-                //    var seeder = scope.ServiceProvider.GetService<Seeder>();
-                //    seeder.SeedAsync().Wait();
-                //}
+                // Seed the database
+                using (var scope = app.ApplicationServices.CreateScope())
+                {
+                    var seeder = scope.ServiceProvider.GetService<Seeder>();
+                    seeder.SeedAsync().Wait();
+                }
             }            
 
             app.UseMvc();

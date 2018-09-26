@@ -7,14 +7,22 @@
     <ul class="nav navbar-nav navbar-right">
       <li class="nav-item">
         <a href="#" class="nav-link" data-toggle="modal" data-target="#cartModal">
-          Cart <span *ngIf="itemCount > 0" class="badge badge-info">{{itemCount}}</span>
+          <i class="fas fa-shopping-cart"></i>Cart <span *ngIf="itemCount > 0" class="badge badge-info">{{itemCount}}</span>
         </a>
       </li>
-      <li *ngIf="authService.loginRequired" class="nav-item" routerLinkActive="active">
-        <a class="nav-link" routerLink="/login">Log In</a>
+      <li class="nav-item" *ngIf="userService.loginRequired">
+        <a class="nav-link" routerLink="/login"><i class="fas fa-user-circle"></i>Log In</a>
       </li>
-      <li *ngIf="!authService.loginRequired" class="nav-item">
-        <a class="nav-link" (click)="logOut()">Log Out</a>
+      <li class="nav-item dropdown" *ngIf="!userService.loginRequired">
+        <a class="nav-link dropdown-toggle" href="#" id="accountMenu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" *ngIf="!userService.loginRequired">
+          <i class="fas fa-user-circle"></i>{{userService.currentUser.email}}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="accountMenu" >
+          <a class="dropdown-item" href="#">Account</a>
+          <a class="dropdown-item" href="#">History</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#" (click)="logOut()">Log Out</a>
+        </div>
       </li>
     </ul>
   </div>

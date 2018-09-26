@@ -1,3 +1,5 @@
+import { Tag } from './tag';
+
 export interface IProductPreview {
   thumbnail: string;
   detail: string;
@@ -7,7 +9,7 @@ export interface IProduct {
   name: string;
   description: string;
   price: number;
-  availableSizes: string[];
   url: string;
   previews: IProductPreview[];
+  tags: Tag[];
 }

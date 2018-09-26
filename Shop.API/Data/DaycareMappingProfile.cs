@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Shop.API.Data;
+using Shop.API.Dto;
 
 namespace Shop.Data
 {
@@ -18,6 +20,8 @@ namespace Shop.Data
             CreateMap<Category, CategoryModel>();
             CreateMap<Category, ProductCategoryModel>();
             CreateMap<Product, ProductModel>();
+            CreateMap<PagedList.PagedList<Product>, PagedList.PagedList<ProductModel>>().ConvertUsing<PagedListConverter<Product, ProductModel>>();
+            CreateMap<RegisterDto, DaycareIdentityUser>().ForMember(dest => dest.UserName, m => m.MapFrom(src => src.Email));
         }
     }
 }

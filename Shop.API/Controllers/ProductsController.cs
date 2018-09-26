@@ -40,15 +40,15 @@ namespace Shop.Controllers
                     ((List<string>)(param.Tags[tag.Key])).Add(stringitem);
                 }                
             }
-            var products = repository.GetProducts(param);
+            var products = mapper.Map<PagedList.PagedList<ProductModel>>(repository.GetProducts(param));
             return Ok(products);
         }
 
         // GET api/products/5
         [HttpGet("{id}")]
-        public Product Get(int id)
+        public ProductModel Get(int id)
         {
-            return repository.GetProductById(id);
+            return mapper.Map<ProductModel>(repository.GetProductById(id));
         }
 
         // GET api/products/5/categories

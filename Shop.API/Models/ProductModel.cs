@@ -15,6 +15,7 @@ namespace Shop.API.Models
         public IEnumerable<string> AvailableSizes { get; set; }
         public string Url { get; set; }
         public IEnumerable<ProductPreview> Previews { get; set; }
+        public IEnumerable<Tag> Tags { get; set; }
 
         public virtual IEnumerable<ProductCategoryModel> Categories { get; set; }
     }

@@ -53,4 +53,19 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit {
     }
   }
 
+  currentSizes(): string[] {
+    if (this.product === null) {
+      return [];
+    }
+    if (this.product.tags === null) {
+      return [];
+    }
+    const sizes = this.product.tags.find(tag => tag.key === 'size');
+    if (sizes == null) {
+      return [];
+    } else {
+      return sizes.value;
+    }
+  }
+
 }

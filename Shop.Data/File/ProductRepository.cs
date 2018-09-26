@@ -239,11 +239,15 @@ namespace Shop.Data.File
                     foreach (var pair in dict)
                     {
                         if (!res.ContainsKey(pair.Key))
-                            res[pair.Key] = new List<string>();
-                        ((List<string>)res[pair.Key]).AddRange(pair.Value);
+                            res[pair.Key] = new HashSet<string>();
+                        foreach (var str in pair.Value)
+                        {
+                            ((HashSet<string>)res[pair.Key]).Add(str);
+                        }
                     }
                 }
             }
+            
             return res;
         }
     }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from './user/authentication.service';
+import { UserService } from './user/user.service';
 import { Router } from '@angular/router';
 import { CartService } from './core/services/cart.service';
 import { OrderItem } from './core/entities/order';
@@ -29,13 +29,13 @@ export class AppComponent implements OnInit {
   }
 
   constructor(
-    public authService: AuthenticationService,
+    public userService: UserService,
     private router: Router,
     public cartService: CartService,
     private categoryService: CategoryService) {}
 
   logOut(): void {
-    this.authService.logout();
+    this.userService.logout();
     this.router.navigateByUrl('/home');
   }
 }

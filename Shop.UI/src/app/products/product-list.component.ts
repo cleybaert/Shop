@@ -40,11 +40,11 @@ export class ProductListComponent implements OnInit {
           this.dataService.getProducts(params)
           .subscribe(products => this.products = products,
                   error => this.errorMessage = error);
-        }        
+        }
       }, error => this.errorMessage = error);
 
       this.categoryService.getTags(categoryId)
-      .subscribe(tags => this.tags = tags,
+      .subscribe(tags => this.tags = tags.sort(),
               error => this.errorMessage = error);
 
       this.categoryService.getCategoryPath(categoryId)
@@ -52,11 +52,11 @@ export class ProductListComponent implements OnInit {
         this.selectedTree = categories;
         this.selectedRootCategory = categories.length > 0 ? categories[0] : null;
       }, error => this.errorMessage = error);
-    });    
+    });
   }
 
-  tagClick(key: string, value: string){
-    this.router.navigate(['/products'], { queryParams: { [key]: value}, queryParamsHandling: "merge" })
+  tagClick(key: string, value: string) {
+    this.router.navigate(['/products'], { queryParams: { [key]: value}, queryParamsHandling: 'merge' });
   }
 
 }
