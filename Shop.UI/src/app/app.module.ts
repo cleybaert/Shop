@@ -1,3 +1,4 @@
+import { CartModule } from './cart/cart.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -9,20 +10,18 @@ import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ProductModule } from './products/product.module';
 import { AppRoutingModule } from './app-routing.module';
-import { ShoppingCartComponent } from './cart/shopping-cart.component';
 import { LoginComponent } from './user/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserService } from './user/user.service';
-import { CartItemComponent } from './cart/cart-item.component';
+import { AccountComponent } from './user/account.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     PageNotFoundComponent,
-    ShoppingCartComponent,
     LoginComponent,
-    CartItemComponent,
+    AccountComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,6 +35,7 @@ import { CartItemComponent } from './cart/cart-item.component';
     }),
     /*HttpClientInMemoryWebApiModule.forRoot(ProductDataService),*/
     ProductModule,
+    CartModule,
     AppRoutingModule,
     ReactiveFormsModule
   ],

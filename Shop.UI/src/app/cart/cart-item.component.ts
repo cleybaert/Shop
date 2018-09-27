@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { OrderItemViewModel } from '../core/viewmodels/order-item';
+import { OrderItem } from '../core/entities/order';
 
 @Component({
   selector: 'app-cart-item',
@@ -7,7 +7,7 @@ import { OrderItemViewModel } from '../core/viewmodels/order-item';
   styleUrls: ['./cart-item.component.css']
 })
 export class CartItemComponent implements OnInit {
-  @Input() orderItem: OrderItemViewModel;
+  @Input() orderItem: OrderItem;
 
   constructor() {
     console.log('Cart item created');

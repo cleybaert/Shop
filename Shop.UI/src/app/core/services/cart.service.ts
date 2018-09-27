@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { IProduct } from './../entities/product';
+import { Injectable, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { OrderItem } from '../entities/order';
 import * as _ from 'lodash';
@@ -7,16 +8,40 @@ import * as _ from 'lodash';
   providedIn: 'root'
 })
 export class CartService {
+  orderItems: BehaviorSubject<OrderItem[]> = new BehaviorSubject([]);
 
-  itemsInCartSubject: BehaviorSubject<OrderItem[]> = new BehaviorSubject([]);
-  private itemsInCart: OrderItem[] = [];
+  private orderItemsList: OrderItem[] = [];
 
   constructor() {
-    this.itemsInCartSubject.subscribe(value => this.itemsInCart = value);
+    console.log('CartService created');
+  }
+
+  get totalItems(): number {
+    if (this.orderItemsList.length = 0) {
+      return 0;
+    } else {
+      return _.sum(
+        this.orderItemsList.map(orderItem => {
+          return orderItem.quantity;
+        })
+      );
+    }
+  }
+
+  get totalPrice(): number {
+    if (this.orderItemsList.length = 0) {
+      return 0;
+    } else {
+      return _.sum(
+        this.orderItemsList.map(orderItem => {
+          return orderItem.quantity * orderItem.product.price;
+        })
+      );
+    }
   }
 
   private equals(value1, value2: OrderItem): boolean {
-    if (!(value2.productid === value1.productid)) {
+    if (!(value2.product.id === value1.product.id)) {
       return false;
     }
     if (!(value2.options.size === value1.options.size)) {
@@ -36,28 +61,28 @@ export class CartService {
   }
 
   private add(item: OrderItem) {
-    const current = this.itemsInCart.find(citem => this.equals(item, citem));
+    const current = this.orderItemsList.find(citem => this.equals(item, citem));
     if (current) {
       current.quantity += item.quantity;
     } else {
-      this.itemsInCart.push(item);
+      this.orderItemsList.push(item);
     }
-    this.itemsInCartSubject.next(this.itemsInCart);
+    this.orderItems.next(this.orderItemsList);
   }
 
-  addToCart(productid: number, quantity: number, options: Map<string, string>) {
+  addToCart(product: IProduct, quantity: number, options: Map<string, string>) {
     const item: OrderItem = {
-      productid: productid,
+      product: product,
       quantity: quantity,
       options: options
     };
     this.add(item);
-    const total = this.productCount(productid);
-    this.log(`${total} item(s) of product '${productid}' in cart`);
+    const total = this.productCount(product.id);
+    this.log(`${total} item(s) of product '${product.id}' in cart`);
   }
 
   productCount(productid: number): number {
-    return _.sum(this.itemsInCart.map(item => item.quantity));
+    return _.sum(this.orderItemsList.filter(item => item.product.id === productid).map(item => item.quantity));
   }
 
   log(message: string) {

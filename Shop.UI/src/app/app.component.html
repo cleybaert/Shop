@@ -7,7 +7,7 @@
     <ul class="nav navbar-nav navbar-right">
       <li class="nav-item">
         <a href="#" class="nav-link" data-toggle="modal" data-target="#cartModal">
-          <i class="fas fa-shopping-cart"></i>Cart <span *ngIf="itemCount > 0" class="badge badge-info">{{itemCount}}</span>
+          <i class="fas fa-shopping-cart"></i>Cart <span *ngIf="cartService.totalItems > 0" class="badge badge-info">{{cartService.totalItems}}</span>
         </a>
       </li>
       <li class="nav-item" *ngIf="userService.loginRequired">
@@ -18,8 +18,8 @@
           <i class="fas fa-user-circle"></i>{{userService.currentUser.email}}
         </a>
         <div class="dropdown-menu" aria-labelledby="accountMenu" >
-          <a class="dropdown-item" href="#">Account</a>
-          <a class="dropdown-item" href="#">History</a>
+          <a class="dropdown-item" routerLink="/account">Account</a>
+          <a class="dropdown-item" routerLink="/history">History</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#" (click)="logOut()">Log Out</a>
         </div>

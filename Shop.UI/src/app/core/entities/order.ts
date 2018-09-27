@@ -1,5 +1,7 @@
+import { IProduct } from './product';
+
 export class OrderItem {
-  productid: number;
+  product: IProduct;
   quantity: number;
   options: Map<string, string> = new Map();
 }

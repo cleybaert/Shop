@@ -18,11 +18,6 @@ export class AppComponent implements OnInit {
   errorMessage: string;
 
   ngOnInit(): void {
-    this.cartService.itemsInCartSubject
-    .subscribe((value: OrderItem[]) => {
-      this.itemCount = 0;
-      value.map(item => this.itemCount += item.quantity);
-    });
     this.categoryService.getCategories()
       .subscribe(values => this.categories = values,
                  error => this.errorMessage = error);

@@ -37,7 +37,7 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit {
 
   onSubmit() {
     const map = new Map().set('size', this.orderForm.get('size').value);
-    this.cartService.addToCart(this.product.id, 1, map);
+    this.cartService.addToCart(this.product, 1, map);
   }
 
   currentSlide(selected: number) {

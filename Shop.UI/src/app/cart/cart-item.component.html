@@ -1,18 +1,18 @@
 <div class="row">
   <div class="col-lg-2 col-md-2 col-sm-2 col-2">
-    <img class="card-img-top" src="{{orderItem.preview}}" alt="{{orderItem.productName}}" class="img-fluid">
+    <img class="card-img-top" src="{{orderItem.product.url}}" alt="{{orderItem.product.name}}" class="img-fluid">
   </div>
   <div class="col-lg-4 col-md-4 col-sm-4 col-10">
     <div class="tableheader d-block d-sm-none">
-      {{orderItem.productName}}
+      {{orderItem.product.name}}
     </div>
     <div class="d-none d-sm-block">
-      {{orderItem.productName}}
+      {{orderItem.product.name}}
     </div>
   </div>
   <div class="col-lg-2 col-md-2 col-sm-2 col-4">
     <h6 class="d-block d-sm-none tableheader">Prijs</h6>
-    {{orderItem.price | currency:'EUR'}}
+    {{orderItem.product.price | currency:'EUR'}}
   </div>
   <div class="col-lg-2 col-md-2 col-sm-2 col-4">
     <h6 class="d-block d-sm-none tableheader">Aantal</h6>
@@ -20,6 +20,6 @@
   </div>
   <div class="col-lg-2 col-md-2 col-sm-2 col-4">
     <h6 class="d-block d-sm-none tableheader">Subtotaal</h6>
-    {{orderItem.subtotal | currency:'EUR'}}
+    {{orderItem.product.price * orderItem.quantity | currency:'EUR'}}
   </div>
 </div>

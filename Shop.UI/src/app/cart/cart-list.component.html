@@ -1,0 +1,15 @@
+<div class="container-fluid">
+  <div *ngIf="orders.length == 0">
+    No items in shopping cart
+  </div>
+  <div *ngIf="orders.length > 0">
+    <div class="row">
+      <div class="col-lg-2 col-md-2 col-sm-2 col-2 tableheader"></div>
+      <h6 class="col-lg-4 col-md-4 col-sm-4 d-none d-sm-block tableheader">Naam</h6>
+      <h6 class="col-lg-2 col-md-2 col-sm-2 d-none d-sm-block tableheader">Prijs</h6>
+      <h6 class="col-lg-2 col-md-2 col-sm-2 d-none d-sm-block tableheader">Aantal</h6>
+      <h6 class="col-lg-2 col-md-2 col-sm-2 d-none d-sm-block tableheader">Subtotaal</h6>
+    </div>
+    <app-cart-item *ngFor="let ord of orders" [orderItem]="ord"></app-cart-item>
+  <div>
+</div>
